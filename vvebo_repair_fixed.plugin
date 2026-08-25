@@ -1,0 +1,14 @@
+#!name=VVebo 时间线修复（防卡住版）
+#!desc=修复 VVebo 3.3.31 用户主页时间线，并确保异常响应不会挂起刷新。
+#!author=Local Fix
+#!system=iOS,iPadOS
+
+[Script]
+http-request ^https:\/\/api\.weibo\.cn\/2\/remind\/unread_count\? script-path=vvebo_repair_fixed.js,timeout=10,tag=VVebo 保存账号 UID,enable=true
+http-request ^https:\/\/api\.weibo\.cn\/2\/users\/show\? script-path=vvebo_repair_fixed.js,timeout=10,tag=VVebo 保存主页 UID,enable=true
+http-request ^https:\/\/api\.weibo\.cn\/2\/statuses\/user_timeline\? script-path=vvebo_repair_fixed.js,timeout=10,tag=VVebo 改写用户时间线,enable=true
+http-response ^https:\/\/api\.weibo\.cn\/2\/profile\/statuses\/tab\? script-path=vvebo_repair_fixed.js,requires-body=true,timeout=10,tag=VVebo 转换时间线响应,enable=true
+http-response ^https:\/\/api\.weibo\.cn\/2\/cardlist\?.*selffans script-path=vvebo_repair_fixed.js,requires-body=true,timeout=10,tag=VVebo 修复粉丝列表,enable=true
+
+[Mitm]
+hostname = api.weibo.cn
